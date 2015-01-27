@@ -5,8 +5,6 @@ Robotice Control Client
 
 Python client for https://github.com/robotice/robotice-control and https://github.com/robotice/robotice
 
-Requirements
-------------
 
 Usage as Robotice Client
 ------------------------
