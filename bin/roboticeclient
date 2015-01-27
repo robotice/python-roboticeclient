@@ -23,7 +23,7 @@ import sys
 
 import argparse
 
-from roboticeclient import Client as RoboticeClient
+from roboticeclient.client import Client as RoboticeClient
 
 import logging
 
