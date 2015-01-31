@@ -7,39 +7,23 @@ import sys
 import six
 import logging
 
-import base
+from . import base
 
 LOG = logging.getLogger("devices")
 
 
-class DeviceManager(base.ControlManager):
+class RealDeviceManager(base.BaseManager):
 
-    SCOPE = "device"
+    SCOPE = "real-device"
 
-    def real_devices(self, request):
-        return self.request(
-            request,
-            '/real-device/',
-            'GET')
+class ModelDeviceManager(base.BaseManager):
 
-    def real_device_create(self, request, data):
-        return self.request(
-            request,
-            '/real-device/',
-            'PUT',
-            data)
+    SCOPE = "model-device"
+    
+class SystemDeviceManager(base.BaseManager):
+    
+    SCOPE = "system-device"
 
-    def real_device_update(self, request, id, data):
-        return self.request(
-            request,
-            '/real-device/%s/' % id,
-            'POST',
-            data)
-
-    def real_device_get(self, request, id):
-        return self.request(
-            request,
-            '/real-device/%s/' % id,
-            'GET')
-
-devices = DeviceManager()
+class DevicesManager(base.BaseManager):
+    
+    SCOPE = "device-catalog"

@@ -69,6 +69,28 @@ Usage as Robotice Control Client !
 	client.actions.save(id, action)
 
 
+Advance usage with Django or Openstack Horizon Dashboard !
+----------------------------------------------------------
+
+.. code-block:: python
+
+	# local_settings.py
+
+	ROBOTICE_HOST default is localhost
+    ROBOTICE_PORT default is 9753
+    ROBOTICE_PROTOCOL default is http
+
+    from roboticeclient.common.horizon import HorizonClient
+    from roboticeclient.common.horizon import DjangoClient
+    from roboticeclient.control.v1.base import RoboticeControlClient
+
+    RoboticeControlClient.client_class = HorizonClient # or plain DjangoClient
+
+    robotice_client = RoboticeControlClient(type="control")
+
+    robotice_client.devices.list()
+
+
 Read more
 ---------
 

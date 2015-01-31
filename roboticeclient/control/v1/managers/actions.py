@@ -7,12 +7,12 @@ import sys
 import six
 import logging
 
-import base
+from . import base
 
 LOG = logging.getLogger(__name__)
 
 
-class ActionManager(base.ControlManager):
+class ActionManager(base.BaseManager):
 
     SCOPE = "action"
 
@@ -20,5 +20,3 @@ class ActionManager(base.ControlManager):
         return self.request(
             '/{0}/{1}/do'.format(self.SCOPE, id),
             'POST')
-
-actions = ActionManager()

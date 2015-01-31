@@ -1,6 +1,6 @@
 
-0.1 (2015-01-27)
+0.3.6 (2015-01-30)
 ================
 
-- first stable distribution
-- support for Robotice and Control with same api
+- basic control and robotice bind done
+- support for Django or Openstack Horizon settings and process response (logging, messages)

@@ -14,8 +14,6 @@ import base
 LOG = logging.getLogger(__name__)
 
 
-class SystemManager(base.ControlManager):
+class SystemManager(base.BaseManager):
 
     SCOPE = "system"
-
-systems = SystemManager()

@@ -7,11 +7,11 @@ import sys
 import six
 import logging
 
-import base
+from . import base
 
 LOG = logging.getLogger("devices")
 
 
-class LocationManager(base.ControlManager):
+class LocationManager(base.BaseManager):
 
     SCOPE = "location"

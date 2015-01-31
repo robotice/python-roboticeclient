@@ -8,11 +8,11 @@ import six
 import json
 import logging
 
-import base
+from . import base
 
 LOG = logging.getLogger("systems")
 
 
-class PlanManager(base.BaseManager):
+class HostManager(base.BaseManager):
 
-    SCOPE = "plan"
+    SCOPE = "host"

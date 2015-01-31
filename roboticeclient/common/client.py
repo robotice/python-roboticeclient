@@ -11,16 +11,21 @@ LOG = logging.getLogger("client.base")
 
 TOKEN_FORMAT = "  Token {0}"
 
-#decimal serialization
+# decimal serialization
+
+
 def decimal_default(obj):
     if isinstance(obj, decimal.Decimal):
         return float(obj)
     raise TypeError
 
+
 class ClientException(Exception):
+
     """
     The base exception class for all exceptions this library raises.
     """
+
     def __init__(self, code, message=None, details=None):
         self.code = code
         self.message = message or self.__class__.message
@@ -31,31 +36,33 @@ class ClientException(Exception):
 
     message = "HTTP error"
 
+
 class BaseClient(object):
 
-    api_prefix = '/api' # /api/v1 etc
-
     def __init__(self, **kwargs):
-            
+
         self.host = kwargs.pop("host", os.getenv('ROBOTICE_HOST', '127.0.0.1'))
         self.port = kwargs.pop("port", os.getenv('ROBOTICE_PORT', 9753))
-        self.protocol = kwargs.pop("protocol", os.getenv('ROBOTICE_PROTOCOL', "http")) 
+        self.protocol = kwargs.pop(
+            "protocol", os.getenv('ROBOTICE_PROTOCOL', "http"))
         self.set_api()
 
     def request(self, path, method="GET", params={}):
         headers = {}
 
-        LOG.debug("%s - %s%s - %s"%(method,self.api,path,params))
-        
+        LOG.debug("%s - %s%s - %s" % (method, self.api, path, params))
+
         if method == "GET":
             request = requests.get('%s%s' % (self.api, path), headers=headers)
         elif method == "POST":
             headers["Content-Type"] = "application/json"
-            request = requests.post('%s%s' % (self.api, path),data=json.dumps(params, default=decimal_default),headers=headers)
+            request = requests.post('%s%s' % (self.api, path), data=json.dumps(
+                params, default=decimal_default), headers=headers)
         elif method == "PUT":
             headers["Content-Type"] = "application/json"
-            request = requests.put('%s%s' % (self.api, path),data=json.dumps(params, default=decimal_default),headers=headers)
-        
+            request = requests.put('%s%s' % (self.api, path), data=json.dumps(
+                params, default=decimal_default), headers=headers)
+
         if request.status_code in (200, 201):
             result = request.json()
             if "error" in result:
@@ -66,7 +73,8 @@ class BaseClient(object):
                 return result
             return result
         else:
-            msg = "url: %s%s, method: %s, status: %s" % (self.api, path, method, request.status_code)
+            msg = "url: %s%s, method: %s, status: %s" % (
+                self.api, path, method, request.status_code)
             LOG.error(msg)
             return []
 
@@ -76,4 +84,5 @@ class BaseClient(object):
         return request.user.tenant_name
 
     def set_api(self):
-        self.api = '%s://%s:%s%s' % (self.protocol, self.host, self.port, self.api_prefix)
+        self.api = '%s://%s:%s%s' % (getattr(self, "protocol", "http"), getattr(
+            self, "host", "127.0.0.1"), getattr(self, "port"), getattr(self, "api_prefix", "/api"))
