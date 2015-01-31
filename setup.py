@@ -31,7 +31,7 @@ setup(
     include_package_data=True,
     author=roboticeclient.__author__,
     author_email='mail@majklk.cz',
-    url='https://github.com/robotice/robotice',
+    url='https://github.com/robotice/python-roboticeclient',
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     package_data={'': ['README', 'HISTORY'], 'roboticeclient': ['*.pem']},
     package_dir={'roboticeclient': 'roboticeclient'},
