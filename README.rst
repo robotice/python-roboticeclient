@@ -74,9 +74,9 @@ Advance usage with Django or Openstack Horizon Dashboard !
 
 .. code-block:: python
 
-	# local_settings.py
+    # local_settings.py
 
-	ROBOTICE_HOST default is localhost
+    ROBOTICE_HOST default is localhost
     ROBOTICE_PORT default is 9753
     ROBOTICE_PROTOCOL default is http
 
