@@ -1,9 +1,12 @@
-
+from __future__ import absolute_import
 import os
 import requests
 import logging
 import json
 import decimal
+
+from django.conf import settings
+from django.contrib import messages
 
 from roboticeclient.common.client import BaseClient
 from roboticeclient.utils.dotdict import list_to_dotdict
@@ -19,14 +22,13 @@ class DjangoClient(BaseClient):
     ROBOTICE_HOST default is localhost
     ROBOTICE_PORT default is 9753
     ROBOTICE_PROTOCOL default is http
-
-    note: for now support only public endpoints and default admin location only!
-
-    TODO: provide auth with username and pass or token to header !
     """
 
     api_prefix = '/api' # /api/v1 etc
 
+    location = False
+
+    auth_token = False
 
     def __init__(self, **kwargs):
             
