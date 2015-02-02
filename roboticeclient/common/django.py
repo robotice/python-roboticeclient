@@ -6,6 +6,7 @@ import json
 import decimal
 
 from roboticeclient.common.client import BaseClient
+from roboticeclient.utils.dotdict import list_to_dotdict
 
 LOG = logging.getLogger("client.base")
 
@@ -18,14 +19,19 @@ class DjangoClient(BaseClient):
     ROBOTICE_HOST default is localhost
     ROBOTICE_PORT default is 9753
     ROBOTICE_PROTOCOL default is http
+
+    note: for now support only public endpoints and default admin location only!
+
+    TODO: provide auth with username and pass or token to header !
     """
 
     api_prefix = '/api' # /api/v1 etc
 
+
     def __init__(self, **kwargs):
             
         try:
-            from openstack_dashboard.local.local_settings import ROBOTICE_HOST, ROBOTICE_PORT
+            from local_settings import ROBOTICE_HOST, ROBOTICE_PORT
             self.host = ROBOTICE_HOST
             self.port = ROBOTICE_PORT
         except Exception, e:
@@ -37,16 +43,9 @@ class DjangoClient(BaseClient):
         headers = {}
 
         _request = request
-        self.set_api(_request)
-        log.debug("%s - %s%s - %s"%(method,self.api,path,params))
+        self.set_api()
+        LOG.debug("%s - %s%s - %s"%(method,self.api,path,params))
         
-        headers["Location"] = self.get_location(_request)
-        try:
-            token = _request.session['token'].id
-            headers["Authorization"] = TOKEN_FORMAT.format(token)
-        except Exception, e:
-            raise e
-
         if method == "GET":
             request = requests.get('%s%s' % (self.api, path), headers=headers)
         elif method == "POST":
