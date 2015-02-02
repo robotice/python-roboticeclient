@@ -34,4 +34,4 @@ class DevicesManager(base.BaseManager):
 
 class MetricManager(base.BaseManager):
 
-    SCOPE = "device-catalog/metric/"
+    SCOPE = "device-catalog/metric"
