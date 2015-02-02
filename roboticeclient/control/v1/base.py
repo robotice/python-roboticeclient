@@ -23,6 +23,7 @@ log = logging.getLogger(__name__)
 def initialize(self):
     pass
 
+
 def some_event(self):
     pass
 
@@ -33,9 +34,10 @@ subclass_body_dict = {
 
 
 class RoboticeControlClient(object):
+
     """
     if you want change base client for providing settings and some other stuff you can do this
-    
+
     from roboticeclient.common.horizon import HorizonClient
     from roboticeclient.common.horizon import DjangoClient
     from roboticeclient.control.v1.base import RoboticeControlClient
@@ -56,6 +58,7 @@ class RoboticeControlClient(object):
                        ("plans", PlanManager),
                        ("const", ConstManager),
                        ("devices", DevicesManager),
+                       ("metrics", MetricManager),
                        ("hosts", HostManager)]
 
     def init_managers(self, **kwargs):

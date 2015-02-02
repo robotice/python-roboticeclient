@@ -41,7 +41,6 @@ LOG = logging.getLogger(__name__)
 __version__ = "0.0.1"
 
 
-
 class BaseApp(object):
 
     name = None
@@ -61,6 +60,7 @@ class BaseApp(object):
         parser.add_argument('config', default=None,
                             help=('plans, devices, systems, actions ...'))
         return parser
+
 
 class ItemList(BaseApp):
 
@@ -101,6 +101,7 @@ class ItemGet(BaseApp):
             pp(data)
         except Exception, e:
             print data
+
 
 class ItemUpdate(BaseApp):
 

@@ -18,6 +18,6 @@ class ActionManager(base.BaseManager):
 
     def do(self, request, id):
         return self.request(
-        	request,
+            request,
             '/{0}/{1}/do'.format(self.SCOPE, id),
             'POST')

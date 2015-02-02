@@ -29,6 +29,7 @@ from control_client.robotice.managers import base
 
 LOG = logging.getLogger(__name__)
 
+
 class TaskManager(base.ControlManager):
 
     def list(self):
@@ -55,7 +56,6 @@ class TaskManager(base.ControlManager):
 
         return result
 
-
     def create_or_update(self, id, item):
         raise NotImplementedError
 
@@ -75,7 +75,6 @@ class TaskManager(base.ControlManager):
         conf = importutils.import_module("robotice.worker_%s" % name)
 
         return self.load_app(conf)
-
 
     def _get_task_args(self, body):
         """helper which return task args, kwargs and options
@@ -141,7 +140,6 @@ class TaskManager(base.ControlManager):
 
         return response
 
-
     def result(self, task_id):
         result = AsyncResult(task_id)
 
@@ -157,7 +155,6 @@ class TaskManager(base.ControlManager):
                 response.update({'result': result.result})
 
         return response
-
 
     def info(self, task_id):
 

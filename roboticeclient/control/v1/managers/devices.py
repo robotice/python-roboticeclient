@@ -16,14 +16,22 @@ class RealDeviceManager(base.BaseManager):
 
     SCOPE = "real-device"
 
+
 class ModelDeviceManager(base.BaseManager):
 
     SCOPE = "model-device"
-    
+
+
 class SystemDeviceManager(base.BaseManager):
-    
+
     SCOPE = "system-device"
 
+
 class DevicesManager(base.BaseManager):
-    
+
     SCOPE = "device-catalog"
+
+
+class MetricManager(base.BaseManager):
+
+    SCOPE = "device-catalog/metric"
