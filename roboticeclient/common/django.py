@@ -31,13 +31,16 @@ class DjangoClient(BaseClient):
     auth_token = False
 
     def __init__(self, **kwargs):
-            
-        try:
-            from local_settings import ROBOTICE_HOST, ROBOTICE_PORT
-            self.host = ROBOTICE_HOST
-            self.port = ROBOTICE_PORT
-        except Exception, e:
-            raise e
+        super(DjangoClient, self).__init__(**kwargs)
+
+        if not (hasattr(self, "port") or hasattr(self, "host")):
+
+            try:
+                from local_settings import ROBOTICE_HOST, ROBOTICE_PORT
+                self.host = ROBOTICE_HOST
+                self.port = ROBOTICE_PORT
+            except Exception, e:
+                LOG.error(str(e))
 
         self.set_api()
 
