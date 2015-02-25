@@ -13,6 +13,8 @@ from django.conf import settings
 from roboticeclient.common.django import DjangoClient
 from roboticeclient.utils.dotdict import list_to_dotdict
 
+from roboticeclient.exceptions import Unauthorized, BadRequest, ClientException
+
 LOG = logging.getLogger("client.base")
 
 TOKEN_FORMAT = "  Token {0}"
@@ -47,12 +49,12 @@ class HorizonClient(DjangoClient):
         self.set_api()
         LOG.debug("%s - %s%s - %s" % (method, self.api, path, params))
 
-        headers["Location"] = self.get_location(_request)
-        try:
-            token = _request.session['token'].id
-            headers["Authorization"] = TOKEN_FORMAT.format(token)
-        except Exception, e:
-            raise e
+        if hasattr(_request.user, "location"):
+            try:
+                token = _request.session['token'].id
+                headers["Authorization"] = TOKEN_FORMAT.format(token)
+            except Exception, e:
+                raise e
 
         if method == "GET":
             request = requests.get('%s%s' % (self.api, path), headers=headers)
@@ -86,10 +88,14 @@ class HorizonClient(DjangoClient):
                     self.api, path, method, request.status_code)
             else:
                 msg = "Unexpected exception."
+            if request.status_code == 401:
+                raise Unauthorized
+            if request.status_code == 400:
+                raise BadRequest
             messages.error(_request, msg)
-            return []
+            raise ClientException("Unhandled response status %s" % request.status_code)
 
     def get_location(self, request):
         """must return location queue, for now tenant name will be used
         """
-        return request.user.tenant_name
+        return request.user.location

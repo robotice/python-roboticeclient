@@ -14,24 +14,14 @@ LOG = logging.getLogger("devices")
 
 class RealDeviceManager(base.BaseManager):
 
-    SCOPE = "real-device"
+    SCOPE = "host/real-device"
 
 
 class ModelDeviceManager(base.BaseManager):
 
-    SCOPE = "model-device"
+    SCOPE = "plan/model-device"
 
 
 class SystemDeviceManager(base.BaseManager):
 
-    SCOPE = "system-device"
-
-
-class DevicesManager(base.BaseManager):
-
-    SCOPE = "device-catalog"
-
-
-class MetricManager(base.BaseManager):
-
-    SCOPE = "device-catalog/metric"
+    SCOPE = "system/system-device"

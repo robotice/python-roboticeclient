@@ -14,4 +14,4 @@ LOG = logging.getLogger("devices")
 
 class LocationManager(base.BaseManager):
 
-    SCOPE = "location"
+    SCOPE = "identity/location"

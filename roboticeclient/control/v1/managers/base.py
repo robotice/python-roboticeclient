@@ -10,12 +10,10 @@ LOG = logging.getLogger("robotice.client")
 
 TOKEN_FORMAT = "  Token {0}"
 
-from roboticeclient.common.manager import BaseManager
+from roboticeclient.common.horizon import HorizonClient
 
 
-class BaseManager(BaseManager):
-
-    api_prefix = '/api'  # /api/v1 etc
+class BaseManager(HorizonClient):
 
     def __init__(self, **kwargs):
 

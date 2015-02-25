@@ -20,6 +20,40 @@ def decimal_default(obj):
     raise TypeError
 
 
+class BaseClientMixin(object):
+
+    def list(self):
+        return self.request(
+            '/%s/' % self.SCOPE,
+            'GET')
+
+    def get(self, request, id):
+        return self.request(
+            request,
+            '/{0}/{1}/'.format(self.SCOPE, id),
+            'GET')
+
+
+    def create(self, request, data):
+        return self.request(
+            request,
+            '/{0}/'.format(self.SCOPE),
+            'PUT',
+            data)
+
+    def update(self, request, id, data):
+        return self.request(
+            request,
+            '/{0}/{1}/'.format(self.SCOPE, id),
+            'POST',
+            data)
+
+    def delete(self, request, id):
+        return self.request(
+            request,
+            '/{0}/{1}/'.format(self.SCOPE, id),
+            'DELETE')
+
 class ClientException(Exception):
 
     """
@@ -37,7 +71,9 @@ class ClientException(Exception):
     message = "HTTP error"
 
 
-class BaseClient(object):
+class BaseClient(BaseClientMixin):
+
+    api_prefix = '/api' # /api/v1 etc
 
     def __init__(self, **kwargs):
 
