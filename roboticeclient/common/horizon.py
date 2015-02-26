@@ -34,7 +34,7 @@ class HorizonClient(DjangoClient):
         super(DjangoClient, self).__init__(**kwargs)
 
         try:
-            from openstack_dashboard.local.local_settings import ROBOTICE_HOST, ROBOTICE_PORT
+            from robotice_dashboard.local.local_settings import ROBOTICE_HOST, ROBOTICE_PORT
             self.host = ROBOTICE_HOST
             self.port = ROBOTICE_PORT
         except Exception, e:
