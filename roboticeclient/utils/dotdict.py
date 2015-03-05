@@ -2,7 +2,7 @@
 
 class dotdict(dict):
 
-    """ Dictionary with dot access """
+    """Dictionary with dot access"""
 
     def __getattr__(self, attr):
         return self.get(attr, None)
@@ -19,7 +19,7 @@ def list_to_dotdict(array):
         for item in array:
             try:
                 _dotdict = dotdict(item)
-            except Exception, e:
+            except Exception as e:
                 raise e
             result.append(_dotdict)
 
