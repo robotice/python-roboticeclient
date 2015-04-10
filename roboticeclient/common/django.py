@@ -34,13 +34,13 @@ class DjangoClient(BaseClient):
         super(DjangoClient, self).__init__(**kwargs)
 
         try:
-            from local_settings import ROBOTICE_HOST, ROBOTICE_PORT
-            self.host = ROBOTICE_HOST
-            self.port = ROBOTICE_PORT
+            self.host = getattr(settings, 'ROBOTICE_HOST', 'localhost')
+            self.port = getattr(settings, 'ROBOTICE_PORT', 9753)
         except Exception, e:
             LOG.error(str(e))
 
         self.set_api()
+
 
     def request(self, request, path, method="GET", params={}):
         headers = {}

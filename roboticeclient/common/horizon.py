@@ -1,11 +1,9 @@
 
 from __future__ import absolute_import
 
-import os
 import requests
 import logging
 import json
-import decimal
 
 from horizon import messages
 from django.conf import settings
@@ -22,7 +20,8 @@ TOKEN_FORMAT = "  Token {0}"
 
 class HorizonClient(DjangoClient):
 
-    """use Openstack Horizon settings for configuration and provide some additional messages
+    """use Openstack Horizon settings
+    for configuration and provide some additional messages
     ROBOTICE_HOST default is localhost
     ROBOTICE_PORT default is 9753
     ROBOTICE_PROTOCOL default is http
@@ -31,12 +30,11 @@ class HorizonClient(DjangoClient):
     """
 
     def __init__(self, **kwargs):
-        super(DjangoClient, self).__init__(**kwargs)
+        super(HorizonClient, self).__init__(**kwargs)
 
         try:
-            from robotice_dashboard.local.local_settings import ROBOTICE_HOST, ROBOTICE_PORT
-            self.host = ROBOTICE_HOST
-            self.port = ROBOTICE_PORT
+            self.host = getattr(settings, 'ROBOTICE_HOST', 'localhost')
+            self.port = getattr(settings, 'ROBOTICE_PORT', 9753)
         except Exception, e:
             LOG.error(str(e))
 
@@ -47,7 +45,10 @@ class HorizonClient(DjangoClient):
 
         _request = request
         self.set_api()
-        LOG.debug("%s - %s%s - %s" % (method, self.api, path, params))
+        full_path = '%s%s' % (self.api, path)
+        if not full_path.endswith("/"):
+            full_path = full_path + '/'
+        LOG.debug("%s - %s - %s" % (method, full_path, params))
 
         if _request and hasattr(_request.user, "location"):
             try:
@@ -57,18 +58,18 @@ class HorizonClient(DjangoClient):
                 raise e
 
         if method == "GET":
-            request = requests.get('%s%s' % (self.api, path), headers=headers)
+            request = requests.get(full_path, headers=headers)
         elif method == "POST":
             headers["Content-Type"] = "application/json"
             request = requests.post(
-                '%s%s' % (self.api, path), data=json.dumps(params), headers=headers)
+                full_path, data=json.dumps(params), headers=headers)
         elif method == "PUT":
             headers["Content-Type"] = "application/json"
             request = requests.put(
-                '%s%s' % (self.api, path), data=json.dumps(params), headers=headers)
+                full_path, data=json.dumps(params), headers=headers)
         elif method == "DELETE":
             request = requests.delete(
-                '%s%s' % (self.api, path), data=json.dumps(params), headers=headers)
+                full_path, data=json.dumps(params), headers=headers)
 
         if request.status_code in (200, 201):
             result = request.json()
