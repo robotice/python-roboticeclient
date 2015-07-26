@@ -22,7 +22,7 @@ def decimal_default(obj):
 
 class BaseClientMixin(object):
 
-    def list(self):
+    def list(self, request=None):
         return self.request(
             '/%s/' % self.SCOPE,
             'GET')
@@ -32,7 +32,6 @@ class BaseClientMixin(object):
             request,
             '/{0}/{1}/'.format(self.SCOPE, id),
             'GET')
-
 
     def create(self, request, data):
         return self.request(
@@ -53,6 +52,7 @@ class BaseClientMixin(object):
             request,
             '/{0}/{1}/'.format(self.SCOPE, id),
             'DELETE')
+
 
 class ClientException(Exception):
 

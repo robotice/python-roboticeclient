@@ -12,11 +12,12 @@ from roboticeclient.common.client import BaseClient
 class BaseManager(BaseClient):
 
     def __init__(self, **kwargs):
-            
+
         self.host = kwargs.pop("host", os.getenv('ROBOTICE_HOST', '127.0.0.1'))
         self.port = kwargs.pop("port", os.getenv('ROBOTICE_PORT', 9753))
-        self.protocol = kwargs.pop("protocol", os.getenv('ROBOTICE_PROTOCOL', "http")) 
+        self.protocol = kwargs.pop("protocol", os.getenv('ROBOTICE_PROTOCOL', "http"))
         self.set_api()
+
 
 def manager_factory(base_client=BaseManager):
 
@@ -32,8 +33,8 @@ def manager_factory(base_client=BaseManager):
     }
 
     ManagerBase = type("ManagerBase", (base_client, ), {
-            "initialize": initialize,
-            "some_event": some_event
-        })
+        "initialize": initialize,
+        "some_event": some_event
+    })
 
     return ManagerBase

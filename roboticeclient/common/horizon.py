@@ -42,14 +42,14 @@ class HorizonClient(DjangoClient):
 
         self.set_api()
 
-    def request(self, request, path, method="GET", params={}):
+    def request(self, path, method="GET", params={}, request=None):
         headers = {}
 
         _request = request
         self.set_api()
         LOG.debug("%s - %s%s - %s" % (method, self.api, path, params))
 
-        if hasattr(_request.user, "location"):
+        if _request and hasattr(_request.user, "location"):
             try:
                 token = _request.session['token'].id
                 headers["Authorization"] = TOKEN_FORMAT.format(token)

@@ -21,7 +21,7 @@ def Client(version=1, type="robotice", **kwargs):
 
         client = mod.Client(version, **kwargs)
 
-    except Exception, e:
+    except Exception as e:
         raise e
 
     return client

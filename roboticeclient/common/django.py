@@ -24,7 +24,7 @@ class DjangoClient(BaseClient):
     ROBOTICE_PROTOCOL default is http
     """
 
-    api_prefix = '/api' # /api/v1 etc
+    api_prefix = '/api'  # /api/v1 etc
 
     location = False
 
@@ -47,19 +47,22 @@ class DjangoClient(BaseClient):
 
         _request = request
         self.set_api()
-        LOG.debug("%s - %s%s - %s"%(method,self.api,path,params))
-        
+        LOG.debug("%s - %s%s - %s" % (method, self.api, path, params))
+
         if method == "GET":
             request = requests.get('%s%s' % (self.api, path), headers=headers)
         elif method == "POST":
             headers["Content-Type"] = "application/json"
-            request = requests.post('%s%s' % (self.api, path),data=json.dumps(params, default=decimal_default),headers=headers)
+            request = requests.post('%s%s' % (self.api, path), data=json.dumps(
+                params, default=decimal_default), headers=headers)
         elif method == "PUT":
             headers["Content-Type"] = "application/json"
-            request = requests.put('%s%s' % (self.api, path),data=json.dumps(params, default=decimal_default),headers=headers)
+            request = requests.put('%s%s' % (self.api, path), data=json.dumps(
+                params, default=decimal_default), headers=headers)
         elif method == "DELETE":
-            request = requests.delete('%s%s' % (self.api, path),data=json.dumps(params, default=decimal_default),headers=headers)
-        
+            request = requests.delete('%s%s' % (self.api, path), data=json.dumps(
+                params, default=decimal_default), headers=headers)
+
         if request.status_code in (200, 201):
             result = request.json()
             if "error" in result:
@@ -74,14 +77,15 @@ class DjangoClient(BaseClient):
             return result
         else:
             if getattr(settings, "DEBUG", False):
-                msg = "url: %s%s, method: %s, status: %s" % (self.api, path, method, request.status_code)
+                msg = "url: %s%s, method: %s, status: %s" % (
+                    self.api, path, method, request.status_code)
             else:
                 msg = "Unexpected exception."
             messages.error(_request, msg)
             return []
 
-    def list(self, request):
+    def list(self, request=None):
         return self.request(
-            request,
             '/%s' % self.SCOPE,
-            'GET')
+            'GET',
+            request=request)
